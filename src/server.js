@@ -114,13 +114,12 @@ app.get("/users", (req, res, next) => {
         })
 })
 
-app.delete("users/delete", (req, res) => {
+app.post("/users/delete", (req, res) => {
     const {id} = req.body;
     deleteUser(id)
         .then(result => {
             res.json(result)
         })
-
 })
 
 app.get("/teams", (req, res, next) => {
