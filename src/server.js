@@ -2,10 +2,12 @@ const express = require("express");
 //const supabase = require("@supabase/supabase-js");
 const app = express();
 const {createClient} = require("@supabase/supabase-js");
+const cors = require("cors")
 
 const supabase = createClient('https://qxrravdeiskdefqwmiwh.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4cnJhdmRlaXNrZGVmcXdtaXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzcyNDI1MjQsImV4cCI6MTk5MjgxODUyNH0.KLXwPQNclkBAFrrQUHhlYsz5E9V86QTukIgZruAvksk')
 
+app.use(cors())
 
 const getProjects = async () => {
     try {
