@@ -201,7 +201,8 @@ app.delete("/teams/delete", (req, res, next) => {
 
 app.post("/teams/add", (req, res) => {
     const {id} = req.body
-    getUser(id, insertTeam(id)).then(result => {
+    const {name} = req.body
+    getUser(id, insertTeam(name, id)).then(result => {
         res.send(result)
     }).catch(error => {
         res.status(400).json(error)
