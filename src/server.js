@@ -11,6 +11,39 @@ app.use(cors())
 //нда
 app.use(express.json());
 
+
+const getUser = async (id, insert) => {
+    try {
+        const {data, error, count} = await supabase
+            .from("Users")
+            .select("*", {count: "exact"})
+            .eq("id", id);
+
+        if(count > 1) {
+            throw new SyntaxError(">1");
+        }
+
+        if(count == 0) {
+            throw new SyntaxError("user not found");
+        }
+        return true
+        insert()
+    } catch (e) {
+        throw (e)
+    }
+}
+
+const insertTeam = async (name, ownerId) => {
+    try {
+        const {error} = await supabase
+            .from("Teams")
+            .insert({name: name, owner_id: ownerId})
+
+    } catch (e) {
+
+    }
+}
+
 const getProjects = async () => {
     try {
         const {data, error} = await supabase
@@ -166,6 +199,13 @@ app.delete("/teams/delete", (req, res, next) => {
         .then(result => {
             res.json(result)
         })
+})
+
+app.post("/teams/add", (req, res) => {
+    const {id} = req.body
+    getUser(id, insertTeam(id)).then(result => {
+        console.log(result)
+    })
 })
 
 app.listen(3000, () => {
