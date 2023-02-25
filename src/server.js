@@ -8,6 +8,8 @@ const supabase = createClient('https://qxrravdeiskdefqwmiwh.supabase.co',
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4cnJhdmRlaXNrZGVmcXdtaXdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzcyNDI1MjQsImV4cCI6MTk5MjgxODUyNH0.KLXwPQNclkBAFrrQUHhlYsz5E9V86QTukIgZruAvksk')
 
 app.use(cors())
+//нда
+app.use(express.json());
 
 const getProjects = async () => {
     try {
@@ -41,6 +43,19 @@ const getUsers = async () => {
         throw (e)
     }
 }
+
+const newUser = async (username, role_id, password) => {
+    console.log({username, role_id, password})
+    try {
+        const {error} = await supabase
+            .from('Users')
+            .insert({username: username, role_id: role_id, password: password})
+        return error
+    } catch (e) {
+        throw (e)
+    }
+}
+
 
 
 const deleteUser = async (id) => {
@@ -107,8 +122,18 @@ app.delete("/projects/delete", (req, res, next) => {
         })
 });
 
+app.post("/users", (req, res, next) => {
+    console.log(req.body)
+    const {username, role_id, password} = req.body.props
+    newUser(username, role_id, password)
+        .then(result => {
+            res.status(200).json({
+                usersData: result
+            })
+        })
+})
 app.get("/users", (req, res, next) => {
-     getUsers()
+    getUsers()
         .then(result => {
             res.status(200).json({
                 usersData: result
@@ -117,11 +142,13 @@ app.get("/users", (req, res, next) => {
 })
 
 app.post("/users/delete", (req, res) => {
-    const {id} = req.body;
+    console.log(req.body)
+    const {id} = req.body
     deleteUser(id)
         .then(result => {
             res.json(result)
         })
+        //TODO: обработка ошибок
 })
 
 app.get("/teams", (req, res, next) => {
