@@ -204,7 +204,7 @@ app.post("/teams/add", (req, res) => {
     getUser(id, insertTeam(id)).then(result => {
         res.send(result)
     }).catch(error => {
-        res.send(error)
+        res.status(400).json(error)
     })
 })
 
