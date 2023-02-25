@@ -204,7 +204,7 @@ app.delete("/teams/delete", (req, res, next) => {
 app.post("/teams/add", (req, res) => {
     const {id} = req.body
     getUser(id, insertTeam(id)).then(result => {
-        console.log(result)
+        res.send(result)
     })
 })
 
