@@ -19,12 +19,10 @@ const getUser = async (id, insert) => {
             .select("*", {count: "exact"})
             .eq("id", id);
 
-        if(count > 1) {
-            throw new SyntaxError(">1");
-        }
-
-        if(count == 0) {
-            throw new SyntaxError("user not found");
+        if (error) {
+            let error = new Error("Что-то не так")
+            error.statusCode = 400
+            throw error
         }
         return true
         insert()
@@ -205,6 +203,8 @@ app.post("/teams/add", (req, res) => {
     const {id} = req.body
     getUser(id, insertTeam(id)).then(result => {
         res.send(result)
+    }).catch(error => {
+        res.send(error)
     })
 })
 
