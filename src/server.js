@@ -237,7 +237,23 @@ app.post("/teams/add", (req, res) => {
 app.post("/projects/add", (req, res) => {
     const {id, name} = req.body
     insertProject(name, id).then(result => {
-        res.send(result)
+        console.log(result)
+        const {code} = result || ""
+        if (code === "23503") {
+            res.status(400).json({
+                message: "Пользователь не существует"
+            })
+        }
+        if (code === "23505") {
+            res.status(400).json({
+                message: "Такое название команды уже используется."
+            })
+        }
+        if (!code){
+            res.status(200).json({
+                message: "OK"
+            })
+        }
     }).catch(error => {
         res.status(400).json(error)
     })
