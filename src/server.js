@@ -36,7 +36,7 @@ const insertTeam = async (name, ownerId) => {
         const {error} = await supabase
             .from("Teams")
             .insert({name: name, owner_id: ownerId})
-
+        return error
     } catch (e) {
 
     }
@@ -143,7 +143,7 @@ app.get("/projects", (req, res, next) => {
         })
 });
 
-app.delete("/projects/delete", (req, res, next) => {
+app.post("/projects/delete", (req, res, next) => {
     const {id} = req.body
     deleteProject(id)
         .then(result => {
@@ -191,7 +191,7 @@ app.get("/teams", (req, res, next) => {
         })
 })
 
-app.delete("/teams/delete", (req, res, next) => {
+    app.post("/teams/delete", (req, res, next) => {
     const {id} = req.body
     deleteTeam(id)
         .then(result => {
@@ -200,14 +200,23 @@ app.delete("/teams/delete", (req, res, next) => {
 })
 
 app.post("/teams/add", (req, res) => {
-    const {id} = req.body
-    const {name} = req.body
+    const {id, name} = req.body
     getUser(id, insertTeam(name, id)).then(result => {
         res.send(result)
     }).catch(error => {
         res.status(400).json(error)
     })
 })
+app.post("/teams/TESTadd", (req, res) => {
+    const {id, name} = req.body
+    insertTeam(name, id).then(result => {
+        res.send(result)
+    }).catch(error => {
+        res.status(400).json(error)
+    })
+})
+
+
 
 app.listen(3000, () => {
     console.log("start")
