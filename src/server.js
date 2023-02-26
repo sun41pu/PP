@@ -241,14 +241,14 @@ app.post("/projects/add", (req, res) => {
         const {code} = result || ""
         if (code === "23503") {
             res.status(400).json({
-                message: "Пользователь не существует"
+                message: "Команда с таким ID не существует"
             })
         }
-        if (code === "23505") {
-            res.status(400).json({
-                message: "Такое название команды уже используется."
-            })
-        }
+        // if (code === "23505") {
+        //     res.status(400).json({
+        //         message: "Такое название проекта уже используется."
+        //     })
+        // }
         if (!code){
             res.status(200).json({
                 message: "OK"
