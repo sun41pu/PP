@@ -41,11 +41,11 @@ const insertTeam = async (name, ownerId) => {
 
     }
 }
-const insertProject = async (name, teamId) => {
+const insertProject = async (name, id) => {
     try {
         const {error} = await supabase
             .from("Projects")
-            .insert({name: name, team_id: teamId})
+            .insert({name: name, team_id: id})
         return error
     } catch (e) {
 
@@ -236,6 +236,7 @@ app.post("/teams/add", (req, res) => {
 })
 app.post("/projects/add", (req, res) => {
     const {id, name} = req.body
+    console.log(req.body)
     insertProject(name, id).then(result => {
         console.log(result)
         const {code} = result || ""
