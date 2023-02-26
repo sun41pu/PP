@@ -213,7 +213,7 @@ app.post("/teams/add", (req, res) => {
     const {id, name} = req.body
     insertTeam(name, id).then(result => {
         console.log(result)
-        const {code} = result
+        const {code} = result || ""
         if (code === "23503") {
             res.status(400).json({
                 message: "Пользователь не существует"
