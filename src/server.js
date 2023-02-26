@@ -41,6 +41,16 @@ const insertTeam = async (name, ownerId) => {
 
     }
 }
+const insertProject = async (name, teamId) => {
+    try {
+        const {error} = await supabase
+            .from("Projects")
+            .insert({name: name, team_id: teamId})
+        return error
+    } catch (e) {
+
+    }
+}
 
 const getProjects = async () => {
     try {
@@ -201,15 +211,15 @@ app.get("/teams", (req, res, next) => {
 
 app.post("/teams/add", (req, res) => {
     const {id, name} = req.body
-    getUser(id, insertTeam(name, id)).then(result => {
+    insertTeam(name, id).then(result => {
         res.send(result)
     }).catch(error => {
         res.status(400).json(error)
     })
 })
-app.post("/teams/TESTadd", (req, res) => {
+app.post("/projects/add", (req, res) => {
     const {id, name} = req.body
-    insertTeam(name, id).then(result => {
+    insertProject(name, id).then(result => {
         res.send(result)
     }).catch(error => {
         res.status(400).json(error)
